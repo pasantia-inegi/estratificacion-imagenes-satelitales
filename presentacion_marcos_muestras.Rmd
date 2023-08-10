@@ -1,0 +1,455 @@
+---
+title: "Estratificación socioeconómica del marco muestral de viviendas a través del uso de imágenes satelitales"
+subtitle: ""  
+author:  
+date: '`r Sys.Date()`'
+output:
+  xaringan::moon_reader:
+    seal: false
+    #lib_dir: libs
+    css: xaringan-themer.css
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: False
+---
+
+class: center, middle
+
+.linea-superior[]
+.linea-inferior[]
+
+<img src="imagenes/logo_portada2.png" width="200" />
+
+
+## Estratificación socioeconómica del marco muestral de viviendas a través del uso de imágenes satelitales
+
+### Experiencia durante el programa de aceleración de ciencia de datos 
+
+#### Agosto 2023
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = TRUE)
+knitr::opts_chunk$set(message = FALSE, echo = FALSE) 
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+xaringanExtra::use_panelset()
+xaringanExtra::use_clipboard()
+library( ggpmisc)
+library(tidyverse)
+```
+
+---
+
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Objetivo inicial
+
+Estratificar algunas porciones del marco muestral de viviendas en la región metropolitana, identificando UPM estratos alto, medio y bajo, por medio de imágenes satelitales y visión computacional
+
+--
+
+.center[
+<img src="imagenes/ejemplo_upm.png" width="600" />
+]
+
+
+
+---
+
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Objetivo alcanzable en el programa
+
+--
+
+## En el camino las cosas cambiaron un poco...
+
+--
+
+.center[<img src="imagenes/meme.png" width="400">]
+
+--
+
+**Estratificar** algunas porciones del marco muestral de viviendas en la región metropolitana, identificando el ingreso como una **variable continua**, por medio de imágenes satelitales y otras fuentes
+
+
+
+---
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Complejidad de la imagen
+
+<br/>
+<br/>
+
+.center[
+<img src="imagenes/ejemplo_upm.png" width="600" />
+]
+
+
+---
+
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Dataset y etiquetas
+
+Tenemos ~1450 UPMs (e imágenes) con datos de ingreso
+
+--
+
+Ingreso per cápita de 3 encuestas:
+
+- EPF
+- Piloto CASEN
+- ESI
+
+--
+
+.center[
+<img src="imagenes/mean_upm.png" width="500" />
+]
+
+
+
+---
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Extracción de características
+
+.panelset[
+
+.panel[.panel-name[google earth engine]
+
+**Bandas de Sentinel-2**
+- bandas
+- operaciones sobre las bandas (mínimo, máximo, mediana, sd)
+- índices (construcción, vegetación, etc.)
+
+.center[
+<img src="imagenes/gee3.png" width="500" />
+]
+
+]
+
+
+.panel[.panel-name[índices]
+
+.pull-left[
+### Vegetación
+
+$NDVI = \frac{(NIR-RED)}{(NIR + RED)}$
+
+### Índice de construcción
+
+$NDBI = \frac{(B11 - B08)}{(B11 + B08)}$
+
+### Índice azul
+
+$blue = \frac{(B2 - B3)}{(B2 + B3)}$
+
+]
+
+
+.pull-right[
+### Índice rojo
+
+$red = \frac{(B4 - B3)}{(B4 + B3)}$
+
+### Índice de suelo
+
+$soil = \frac{((B11 + B4) - (B8 - B2))}{(B11 + B4 + B8 + B2)}$
+
+
+### índices + bandas + operaciones = 148 características
+
+]
+
+
+]
+
+]
+
+
+
+
+---
+
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Más características
+
+.panelset[
+
+
+.panel[.panel-name[árboles]
+
+.center[<img src="imagenes/trees.png" width="500">]
+
+
+]
+
+
+.panel[.panel-name[piscinas]
+
+.center[<img src="imagenes/pools.png" width="900">]
+
+### Esto será mejorado con segmentación
+
+]
+
+
+.panel[.panel-name[luces nocturnas]
+.center[<img src="imagenes/luces.png" width="500">]
+]
+
+
+
+.panel[.panel-name[características]
+
+.center[<img src="imagenes/features.png" width="900">]
+
+]
+]
+
+---
+
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Entrenamiento
+
+Partición 80/20
+
+--
+
+xgboost
+
+--
+
+Optimizamos algunos hiperparámetros
+- rounds
+- profundidad
+- eta
+
+
+
+---
+
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Flujo completo
+
+.pull-left[
+<img src="imagenes/bash_file.png" width="400">
+
+<img src="imagenes/logo_python.png" width="200">
+]
+
+.pull-right[
+
+<img src="imagenes/logo_r.jpg" width="300">
+
+<img src="imagenes/logo_gee.jpg" width="300">
+
+
+]
+
+---
+
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Resultados
+
+
+```{r, fig.height=5, fig.width=8}
+library(feather)
+library(tidyverse)
+library(plotly)
+
+results <- read_feather("data/xgboost_predictions.feather")
+importance_matrix <- read_feather("data/importance_matrix.feather")
+
+importance_plot <- importance_matrix %>%
+  dplyr::slice(1:20) %>%
+  ggplot(aes(x = reorder(Feature, Gain)  , y = Gain)) +
+  geom_bar(stat = "identity")  +
+  coord_flip() + 
+  labs(title = "Most important variables") + 
+  theme_bw() +
+  theme(axis.title.y = element_blank(),
+        plot.title = element_text(size = 16)
+        )
+ggplotly(importance_plot, tooltip = c("y"))
+
+
+```
+
+
+---
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Resultados
+
+.panelset[
+
+.panel[.panel-name[qqplot]
+```{r, fig.height=5, fig.width=8}
+# qqplots
+pred_sorted <- results %>%
+  filter(tipo == "predicted") %>%
+  pull(value) %>%
+  sort()
+
+real_sorted <- results %>%
+  filter(tipo == "real") %>%
+  pull(value) %>%
+  sort()
+
+df_sorted <- data.frame(real = real_sorted, pred = pred_sorted)
+
+qqplot <- ggplot(df_sorted, aes(x = real, y = pred )) +
+  geom_point() +
+  scale_y_continuous(limits = c(min(real_sorted), max(real_sorted))) +
+  geom_abline() +
+  labs(title = "QQ plot. Predicted versus real") + 
+  theme_bw() +
+  theme(axis.title.y = element_blank(),
+        plot.title = element_text(size = 16)
+        )
+
+ggplotly(qqplot)
+
+
+```
+
+]
+
+.panel[.panel-name[line-plot]
+.center[
+<img src="imagenes/lines1.png" width="500">
+]
+
+]
+
+.panel[.panel-name[density-plot]
+
+```{r, fig.height=5, fig.width=8}
+density_plot <- results %>%
+  ggplot(aes(value, fill = tipo, color = tipo  )) +
+  geom_density(alpha = 0.1) +
+  theme_bw()
+density_plot
+
+```
+
+
+
+]
+
+.panel[.panel-name[scatter-plot]
+
+```{r, fig.height=5, fig.width=8}
+# Gráfico de puntos
+results_wider <-  data.frame(real = results %>% filter(tipo == "real") %>% pull(value), predicted =  results %>% filter(tipo == "predicted") %>% pull(value))
+
+corr_log <- results_wider %>%
+  ggplot(aes(x = log10(real)  , y = log10(predicted) )) +
+  stat_poly_line() +
+  stat_poly_eq() +
+  geom_point() +
+  geom_abline() +
+  theme_bw()
+corr_log
+
+```
+
+]
+
+
+
+
+
+]
+
+
+
+
+
+---
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Más allá del programa
+
+
+### Detección de techos (SAM)
+
+
+.center[<img src="imagenes/roofs.png" width="400">]
+
+
+--
+
+**Más datos**
+
+- CASEN oficial
+- EPF
+
+
+---
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Shinyapp
+
+<br>
+<br>
+<br>
+
+.center[
+## Veamos un prototipo
+]
+
+
+
+---
+
+class: center, middle
+
+.linea-superior[]
+.linea-inferior[]
+
+<img src="imagenes/logo_portada2.png" width="200" />
+
+
+
+## Estratificación socioeconómica del marco muestral de viviendas a través del uso de imágenes satelitales
+
+### Experiencia durante el programa de aceleración de ciencia de datos 
+
+#### Agosto 2023

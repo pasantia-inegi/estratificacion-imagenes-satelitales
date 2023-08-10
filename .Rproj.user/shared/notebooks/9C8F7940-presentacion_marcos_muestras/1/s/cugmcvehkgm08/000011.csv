@@ -1,0 +1,6 @@
+"0","density_plot <- results %>%"
+"0","  ggplot(aes(value, fill = tipo, color = tipo  )) +"
+"0","  geom_density(alpha = 0.1) +"
+"0","  theme_bw()"
+"0","density_plot"
+"0",""
