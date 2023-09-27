@@ -26,7 +26,7 @@ class: center, middle
 
 ### Experiencia durante el programa de aceleración de ciencia de datos 
 
-#### Agosto 2023
+#### Octubre 2023
 
 
 ```{r setup, include=FALSE}
@@ -395,32 +395,8 @@ corr_log
 ]
 
 
-
-
-
 ---
-background-image: url("imagenes/fondo2.PNG")
-background-size: contain;
-background-position: 100% 0%
 
-# Más allá del programa
-
-
-### Detección de techos (SAM)
-
-
-.center[<img src="imagenes/roofs.png" width="400">]
-
-
---
-
-**Más datos**
-
-- CASEN oficial
-- EPF
-
-
----
 background-image: url("imagenes/fondo2.PNG")
 background-size: contain;
 background-position: 100% 0%
@@ -438,6 +414,102 @@ background-position: 100% 0%
 
 
 ---
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Próximos pasos
+
+**Repetir el proceso con datos nuevos (este año)**
+
+--
+
+```{r, echo=FALSE}
+library(tidyverse)
+library(readxl)
+library(feather)
+
+casen <- read_feather("data/casen_compacta.feather")
+epf <- read_excel("data/tabla_ix_epf.xlsx")
+
+upm_epf <- epf %>% 
+  filter(region == 13) %>% 
+  group_by(upm) %>% 
+  filter(n() >= 2) %>% 
+  slice(1) %>% 
+  ungroup() 
+
+upm_casen <-  casen %>% 
+  select(upm = id_upm)
+
+
+combinado <- upm_epf %>% 
+  bind_rows(upm_casen) %>% 
+  group_by(upm) %>% 
+  slice(1) %>% 
+  ungroup()
+  
+total_upm <- combinado %>% 
+  nrow() %>% 
+  as.character()
+
+
+```
+
+Uniendo EPF y CASEN tenemos aproximadamente `r total_upm`
+
+
+- Extrar características de imágenes nuevas
+- Entrenar
+- Actualizar app
+
+
+
+
+--
+
+**Automatizar descarga via API GEE-Python (octubre)**
+
+--
+
+**Mejorar la extracción de características (octubre)**
+
+--
+
+**Estudiar algunas opciones para mejorar el entrenamiento (octubre-noviembre)**
+
+--
+
+**Predicciones para todo el Gran Santiago (diciembre)**
+
+
+
+
+
+---
+
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Próximos pasos
+
+
+**Generación de productos (enero-febrero-marzo)**
+
+- Publicación de aplicación de uso interna
+- Documento de trabajo 
+
+--
+
+**Nuevas aplicaciones y exploraciones (2024)**
+
+- Extensión estratificación al resto del país
+- Detección de asentamientos urbanos
+- Detección de cambios importantes en UPMs
+
+
+---
 
 class: center, middle
 
@@ -452,4 +524,4 @@ class: center, middle
 
 ### Experiencia durante el programa de aceleración de ciencia de datos 
 
-#### Agosto 2023
+#### Octubre 2023
