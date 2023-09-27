@@ -498,7 +498,8 @@ background-position: 100% 0%
 **Generación de productos (enero-febrero-marzo)**
 
 - Publicación de aplicación de uso interna
-- Documento de trabajo 
+- Documentación
+- Presentación institucional sobre la experiencia (marzo)
 
 --
 
