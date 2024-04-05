@@ -48,6 +48,21 @@ background-image: url("imagenes/fondo2.PNG")
 background-size: contain;
 background-position: 100% 0%
 
+# El plan
+
+## 20 minutos de presentación
+
+## 20 minutos de trabajo en grupos 
+
+## 20 minutos para compartir ideas
+ 
+
+---
+
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
 # Objetivo inicial
 
 Estratificar algunas porciones del marco muestral de viviendas en la región metropolitana, identificando UPM estratos alto, medio y bajo, por medio de imágenes satelitales y visión computacional
@@ -430,112 +445,52 @@ background-position: 100% 0%
 
 
 
+
+
 ---
 background-image: url("imagenes/fondo2.PNG")
 background-size: contain;
 background-position: 100% 0%
 
-# Próximos pasos
+# Producto buscado
 
-**Repetir el proceso con datos nuevos (este año)**
+Servicio de actualización continua del marco muestral de viviendas
 
---
+Periodicidad arbitraria de actualización
 
-```{r, echo=FALSE}
-library(tidyverse)
-library(readxl)
-library(feather)
-
-casen <- read_feather("data/casen_compacta.feather")
-epf <- read_excel("data/tabla_ix_epf.xlsx")
-
-upm_epf <- epf %>% 
-  filter(region == 13) %>% 
-  group_by(upm) %>% 
-  filter(n() >= 2) %>% 
-  slice(1) %>% 
-  ungroup() 
-
-upm_casen <-  casen %>% 
-  select(upm = id_upm)
-
-
-combinado <- upm_epf %>% 
-  bind_rows(upm_casen) %>% 
-  group_by(upm) %>% 
-  slice(1) %>% 
-  ungroup()
-  
-total_upm <- combinado %>% 
-  nrow() %>% 
-  as.character()
-
-
-```
-
-Uniendo EPF y CASEN tenemos aproximadamente `r total_upm`
-
-
-- Extrar características de imágenes nuevas
-- Entrenar
-- Actualizar app
-
-
-
-
---
-
-**Automatizar descarga via API GEE-Python (octubre)**
-
---
-
-**Mejorar la extracción de características (octubre)**
-
---
-
-**Estudiar algunas opciones para mejorar el entrenamiento (octubre-noviembre)**
-
---
-
-**Predicciones para todo el Gran Santiago (diciembre)**
-
-
-
-
+Nos gustaría implementar todo en el lago de datos 
 
 ---
-
 background-image: url("imagenes/fondo2.PNG")
 background-size: contain;
 background-position: 100% 0%
 
-# Próximos pasos
+# Consideraciones
 
 
-**Generación de productos (enero-febrero-marzo)**
+- Captura de datos
+  + ¿Alternativas a google earh engine? 
+  + ¿Cuáles serían los desafíos con otras alternativas?
 
-- Publicación de aplicación de uso interna
-- Documentación
-- Presentación institucional sobre la experiencia (marzo)
+- Almacenamiento 
+  + Estamos pensando en Minio
+  + ¿Qué consideraciones hay sobre el espacio?
+  + ¿Seguridad? ¿otro? 
 
---
+- Modelamiento/Procesamiento
+  + ¿Qué herramientas se podrían usar para el procesamiento de imágenes? 
 
-**Nuevas aplicaciones y exploraciones (2024)**
-
-- Extensión estratificación al resto del país
-- Detección de asentamientos urbanos
-- Detección de cambios importantes en UPMs
-
+- Publicación
+  + ¿Qué herramientas de visualización gratuitas podrían utilizarse? 
+  + Formato de entrega a nuestros colegas de marcos y muestras ¿API, texto plano u otro?  
 
 ---
-
 class: center, middle
 
 .linea-superior[]
 .linea-inferior[]
 
 <img src="imagenes/logo_portada2.png" width="200" />
-
 
 
 ## Estratificación socioeconómica del marco muestral de viviendas a través del uso de imágenes satelitales
