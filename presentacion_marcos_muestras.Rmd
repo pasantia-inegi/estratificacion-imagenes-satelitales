@@ -26,7 +26,7 @@ class: center, middle
 
 ### Experiencia durante el programa de aceleración de ciencia de datos 
 
-#### Octubre 2023
+#### Abril 2024
 
 
 ```{r setup, include=FALSE}
@@ -136,12 +136,29 @@ background-position: 100% 0%
 
 **Bandas de Sentinel-2**
 - bandas
-- operaciones sobre las bandas (mínimo, máximo, mediana, sd)
+- operaciones sobre las bandas (media, mínimo, máximo, mediana, sd y suma)
 - índices (construcción, vegetación, etc.)
 
-.center[
-<img src="imagenes/gee3.png" width="500" />
+.red[Dificultades con GEE:] 
+- Exclusión de shapes grandes, áreas rurales
+- Tiempo de ejecución es limitado
+
+
+.pull-left[
+
+**GEE** desde el servicio web
+
+<img src="imagenes/gee3.png" width="300" />
 ]
+
+.pull-right[
+
+**API GEE** descarga con python en local
+
+<img src="imagenes/descarga_python.png" width="400" />
+]
+
+
 
 ]
 
@@ -525,4 +542,4 @@ class: center, middle
 
 ### Experiencia durante el programa de aceleración de ciencia de datos 
 
-#### Octubre 2023
+#### Abril 2024
