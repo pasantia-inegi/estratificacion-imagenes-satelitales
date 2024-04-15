@@ -348,7 +348,7 @@ background-position: 100% 0%
 .panelset[
 
 .panel[.panel-name[qqplot]
-```{r, fig.height=5, fig.width=8}
+```{r, fig.height=5, fig.width=8, warning=FALSE, message=FALSE}
 # qqplots
 pred_sorted <- results %>%
   filter(tipo == "predicted") %>%
